@@ -8,7 +8,7 @@
     <title>Postgres DB</title>
 
     <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -18,39 +18,86 @@
     <![endif]-->
   </head>
   <body>
-    <h1>My Posgres DB</h1>
+  
 
   
-  <button type="submit" onclick= "getDataScript()" class="btn btn-default">Get Data</button> 
+
 
    <script type="text/JavaScript"> 
 
     function  getDataScript(){  
-
       console.log("I'm invoking this function!");
 
       $.ajax({
         url: "http://localhost:3000/api/v1/test", 
         success: function(result){
-         // var obj = JSON.parse(result);
-         console.log(result);
+         //need to acces specific OBJECTs then
+        for (i = 0; i < result.length; i++){
+          
+          console.log(result[i].data.name);
+         //$('.list-group-item').html(result[i].data.name);
+         if (result[i].data.name != undefined){
+         $('<a href="#" class="list-group-item" /a>').text(result[i].data.name).appendTo('body');
+         }
+       }
+
+        
         }
       });
 
     }
+
+</script>
+
+<script>
+$(function() {
+     $("button#Submit").click(function() {  
+      var formData=$("#form").val();
+      console.log(formData);
+      $.ajax({
+           type: "POST",
+           url: "http://localhost:3000/api/v1/testPost",
+           data: {
+            "name": formData},
+         success: function(msg){
+                //$("#thanks").html(msg)
+                //$("#form-content").modal('hide');
+                console.log("success"); 
+         },
+        error: function(){
+            alert("failure");
+        }
+       });
+
+
+
+
+     });
+   });
+
     </script>
-       
-    <ul class="list-group">
-  <li class="list-group-item">Cras justo odio</li>
-  <li class="list-group-item">Dapibus ac facilisis in</li>
-  <li class="list-group-item">Morbi leo risus</li>
-  <li class="list-group-item">Porta ac consectetur ac</li>
-  <li class="list-group-item">Vestibulum at eros</li>
-</ul>
 
     
 
-
+<nav class="navbar navbar-default navbar-fixed-top"> 
+  <h1>My Posgres DB</h1>   
+<div class="row">
+  <div class="col-lg-6">
+    <div class="input-group">
+      <span class="input-group-btn">
+        <button class="btn btn-default" id="Submit"> Post a Name </button>
+      </span>
+      <input type="text" class="form-control" id="form" placeholder="Data You'd like to post">
+    </div><!-- /input-group -->
+</nav>
+<br>
+<br>
+<br>
+ <button type="submit" onclick= "getDataScript()" class="btn btn-default">Get Data</button> 
+       
+  
+<!--    <ul class="list-group"> <h4>DATA</h4>
+   </ul> -->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
    
     <!-- Include all compiled plugins (below), or include individual files as needed -->
